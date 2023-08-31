@@ -1,0 +1,220 @@
+  {
+    "": "",
+    "id": 1,
+    "Load’s APIS": "1. post \"/load\""
+  },
+  {
+    "": "",
+    "id": 2,
+    "Load’s APIS": "payload:"
+  },
+  {
+    "": "",
+    "id": 3,
+    "Load’s APIS": "{"
+  },
+  {
+    "": "\"loadingPoint\": \"delhi\",",
+    "id": 4,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"unloadingPoint\": \"jaipur\",",
+    "id": 5,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"productType\": \"chemicals\",",
+    "id": 6,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"truckType\": \"canter\",",
+    "id": 7,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"noOfTrucks\": \"1\",",
+    "id": 8,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"weight\": \"100\",",
+    "id": 9,
+    "Load’s APIS": ""
+  },
+  {
+    "": "optional:\"comment\": \"\",",
+    "id": 10,
+    "Load’s APIS": ""
+  },
+  {
+    "": "“shipperId” : “shipper:”,",
+    "id": 11,
+    "Load’s APIS": ""
+  },
+  {
+    "": "“Date” : “dd-mm-yyyy”",
+    "id": 12,
+    "Load’s APIS": ""
+  },
+  {
+    "": "",
+    "id": 13,
+    "Load’s APIS": "}"
+  },
+  {
+    "": "",
+    "id": 14,
+    "Load’s APIS": "Response:loads details added successfully"
+  },
+  {
+    "": "",
+    "id": 15,
+    "Load’s APIS": "2. GET “/load”"
+  },
+  {
+    "": "Query params - (shipperId)",
+    "id": 16,
+    "Load’s APIS": ""
+  },
+  {
+    "": "Response:list of loads with this shipperId",
+    "id": 17,
+    "Load’s APIS": ""
+  },
+  {
+    "": "GET “load/{loadId}”",
+    "id": 18,
+    "Load’s APIS": "1"
+  },
+  {
+    "": "PUT “load/{loadId}”",
+    "id": 19,
+    "Load’s APIS": "2"
+  },
+  {
+    "": "{",
+    "id": 20,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"loadingPoint\": \"alwar\",",
+    "id": 21,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"unloadingPoint\": \"jaipur\",",
+    "id": 22,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"productType\": \"chemicals\",",
+    "id": 23,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"truckType\": \"canter\",",
+    "id": 24,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"noOfTrucks\": \"1\",",
+    "id": 25,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"weight\": \"100\",",
+    "id": 26,
+    "Load’s APIS": ""
+  },
+  {
+    "": "\"comment\": \"\",",
+    "id": 27,
+    "Load’s APIS": ""
+  },
+  {
+    "": "“Date” : “dd-mm-yyyy”",
+    "id": 28,
+    "Load’s APIS": ""
+  },
+  {
+    "": "}",
+    "id": 29,
+    "Load’s APIS": ""
+  },
+  {
+    "": "DELETE “load/{loadId}”",
+    "id": 30,
+    "Load’s APIS": "3"
+  },
+  {
+    "": null,
+    "id": 31,
+    "Load’s APIS": ""
+  }
+///program///
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.stream.Collectors;
+
+public class APIClient {
+    public static void main(String[] args) {
+        // Base URL for the API
+        String baseUrl = "https://api.example.com";
+
+        // Define endpoints
+        String postLoadEndpoint = "/load";
+        String getLoadByShipperIdEndpoint = "/load?shipperId=shipper";
+        int loadId = 1;
+        String getLoadByIdEndpoint = "/load/" + loadId;
+        String putLoadEndpoint = "/load/" + loadId;
+        String deleteLoadEndpoint = "/load/" + loadId;
+
+        try {
+            // 1. POST /load
+            String postPayload = "{\"loadingPoint\": \"delhi\", \"unloadingPoint\": \"jaipur\", \"productType\": \"chemicals\", \"truckType\": \"canter\", \"noOfTrucks\": \"1\", \"weight\": \"100\"}";
+            String postResponse = sendPostRequest(baseUrl + postLoadEndpoint, postPayload);
+            System.out.println("1. POST /load Response: " + postResponse);
+
+            // 2. GET /load?shipperId=shipper
+            String getLoadByShipperResponse = sendGetRequest(baseUrl + getLoadByShipperIdEndpoint);
+            System.out.println("2. GET /load?shipperId=shipper Response: " + getLoadByShipperResponse);
+
+            // 3. GET /load/{loadId}
+            String getLoadByIdResponse = sendGetRequest(baseUrl + getLoadByIdEndpoint);
+            System.out.println("3. GET /load/{loadId} Response: " + getLoadByIdResponse);
+
+            // 4. PUT /load/{loadId}
+            String putPayload = "{\"loadingPoint\": \"alwar\", \"unloadingPoint\": \"jaipur\", \"productType\": \"chemicals\", \"truckType\": \"canter\", \"noOfTrucks\": \"1\", \"weight\": \"100\"}";
+            String putResponse = sendPutRequest(baseUrl + putLoadEndpoint, putPayload);
+            System.out.println("4. PUT /load/{loadId} Response: " + putResponse);
+
+            // 5. DELETE /load/{loadId}
+            String deleteResponse = sendDeleteRequest(baseUrl + deleteLoadEndpoint);
+            System.out.println("5. DELETE /load/{loadId} Response: " + deleteResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String sendPostRequest(String apiUrl, String payload) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = payload.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+            return br.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
+    }
+
+    // Similar methods for GET, PUT, and DELETE requests
+}
